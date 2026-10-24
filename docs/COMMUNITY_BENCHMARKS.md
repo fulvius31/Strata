@@ -73,6 +73,12 @@ and their limits. Report what you actually measured and label estimates separate
   IQ2_XS with adaptive cache E4/S24: 48.23 accepted-decode tok/s (median of 5) on a modified, locally built engine (not an official release; source commit and hashes in provenance.json, steps in REPRODUCE.md).
 - [2026-10-12: Radeon 780M (gfx1103), Ryzen 7 8745HS, 60 GB RAM, GTT 50 GiB](../bench/results/2026-10-12-community-gfx1103/README.md):
   the gfx1103 port (native dot4, the gfx11 WMMA kernels, the exact speed switches and a calibrated hipBLASLt table), hand-built on ROCm 10.1, Q2_0 + MTP at 32K: prompts 90 tok/s plain, 186 with the table, 277 with the WMMA opt-ins (4K), decode 13.1 -> 14.3 tok/s; zero GPU resets.
+- [2026-10-24: RTX 4080 Laptop 12 GB (sm_89), Core i9-13950HX, 62 GB RAM](../bench/results/2026-10-24-community-rtx4080-laptop/README.md):
+  container build of engine 0.1.49.1 with the newly measured **sm_89 MMVQ_IL matvec table** (docs/MMVQ_IL_TABLE.md),
+  original Flash-Next IQ3_S, 131,072-token context, tuned custom config (`--kv q4_0 --pool-workers 23 --adapt-async 1`
+  and `STRATA_EMB_REUSE_ACCOUNT`); standard suite: decode 55.8-66.5 tok/s, prompt 961/1,292 tok/s at 4K/16K, sanity 12/12;
+  quick check: decode ~62 tok/s, prefill ~1,713 tok/s at 52K. Custom track (not release defaults). Details and limits
+  in the report; the sm_89 table itself is bit-exact (`mmvq_il_parity: OK`).
 
 ## Run the standard benchmark
 
